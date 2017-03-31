@@ -340,8 +340,8 @@ class Line2DCollection(Artist):
 
         self.dashcapstyledict[lineKey] = dash_capstyle
         self.dashjoinstyledict[lineKey] = dash_joinstyle
-        self.solidjoinstyledict[lineKey] = solid_capstyle
-        self.solidcapstyledict[lineKey] = solid_joinstyle
+        self.solidjoinstyledict[lineKey] = solid_joinstyle
+        self.solidcapstyledict[lineKey] = solid_capstyle
 
         self.linestyledict[lineKey] = linestyle
         self.drawstyledict[lineKey] = drawstyle
@@ -377,7 +377,7 @@ class Line2DCollection(Artist):
         """
         # retrieve all the saved line attributes
         xdata = self.xdatadict[lineKey]
-        ydata = self.xdatadict[lineKey]
+        ydata = self.ydatadict[lineKey]
         linewidth = self.linewidthdict[lineKey]
         linestyle = self.linestyledict[lineKey]
         color = self.colordict[lineKey]

@@ -743,9 +743,9 @@ class Axis(artist.Artist):
 
         # Initialize new Line2DCollections for each tick type
         # in order to keep track of the lines used in the ticks
-        self._tick1collection = Line2DCollection()
-        self._tick2collection = Line2DCollection()
-        self._gridcollection = Line2DCollection()
+        self._tick1collection = mlines.Line2DCollection()
+        self._tick2collection = mlines.Line2DCollection()
+        self._gridcollection = mlines.Line2DCollection()
 
         self.majorTicks = []
         self.minorTicks = []

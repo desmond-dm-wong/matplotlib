@@ -236,7 +236,33 @@ class Line2DCollection(Artist):
 
     """
 
-    drawStyleKeys = list(Line2D._drawStyles_l) + list(Line2D._drawStyles_s)
+    lineStyles = _lineStyles = {  # hidden names deprecated
+        '-':    '_draw_solid',
+        '--':   '_draw_dashed',
+        '-.':   '_draw_dash_dot',
+        ':':    '_draw_dotted',
+        'None': '_draw_nothing',
+        ' ':    '_draw_nothing',
+        '':     '_draw_nothing',
+    }
+
+    _drawStyles_l = {
+        'default':    '_draw_lines',
+        'steps-mid':  '_draw_steps_mid',
+        'steps-pre':  '_draw_steps_pre',
+        'steps-post': '_draw_steps_post',
+    }
+
+    _drawStyles_s = {
+        'steps': '_draw_steps_pre',
+    }
+
+    # drawStyles should now be deprecated.
+    drawStyles = {}
+    drawStyles.update(_drawStyles_l)
+    drawStyles.update(_drawStyles_s)
+    # Need a list ordered with long names first:
+    drawStyleKeys = list(_drawStyles_l) + list(_drawStyles_s)
 
     def __init__(self):
         """

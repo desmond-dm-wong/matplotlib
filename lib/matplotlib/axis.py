@@ -759,7 +759,7 @@ class Axis(artist.Artist):
         self.cla()
         self._set_scale('linear')
 
-    def _get_new_tick_id():
+    def _get_new_tick_id(self):
         """
         Get an unique ID for the next tick
 

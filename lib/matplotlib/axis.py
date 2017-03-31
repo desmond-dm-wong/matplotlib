@@ -616,7 +616,7 @@ class YTick(Tick):
             self._gridline = self._gridcollection.get_line(self._tickid)
             self._gridline.set_transform(self.axes.get_yaxis_transform(which='grid'))
             self._gridline.get_path()._interpolation_steps = GRIDLINE_INTERPOLATION_STEPS
-            self._set_artist_props(l)
+            self._set_artist_props(self._gridline)
         return self._gridline
 
     def _get_text1_transform(self):

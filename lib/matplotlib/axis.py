@@ -153,7 +153,10 @@ class Tick(artist.Artist):
 
         self.apply_tickdir(tickdir)
 
+        # Save the tick id of the current tick
         self._tickid = tickid
+
+        # Save the references to the axis Line2DCollection objects
         self._tick1collection = tick1col
         self._tick2collection = tick2col
         self._gridcollection = gridcol
@@ -162,6 +165,7 @@ class Tick(artist.Artist):
         self._tick2line = None
         self._gridline = None
 
+        # Add the default line2D attributes to the line2DCollection
         self._add_tick1line()
         self._add_tick2line()
         self._add_gridline()
@@ -181,7 +185,10 @@ class Tick(artist.Artist):
     @property
     def tick1line(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing tick1line
+
+        Replaces the legacy property 'tick1line'
+        Function masked as a property for backwards compatability
         """
         if self._tick1line is None:
             self._tick1line = self._tick1collection.get_line(self._tickid)
@@ -190,7 +197,10 @@ class Tick(artist.Artist):
     @property
     def tick2line(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing tick2line
+
+        Replaces the legacy property 'tick2line'
+        Function masked as a property for backwards compatability
         """
         if self._tick2line is None:
             self._tick2line = self._tick2collection.get_line(self._tickid)
@@ -199,7 +209,10 @@ class Tick(artist.Artist):
     @property
     def gridline(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing gridline
+
+        Replaces the legacy property 'gridline'
+        Function masked as a property for backwards compatability
         """
         if self._gridline is None:
             self._gridline = self._gridcollection.get_line(self._tickid)
@@ -403,22 +416,33 @@ class XTick(Tick):
     @property
     def tick1line(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing tick1line
+
+        Replaces the legacy property 'tick1line'
+        Function masked as a property for backwards compatability
         """
         if self._tick1line is None:
             self._tick1line = self._tick1collection.get_line(self._tickid)
+
+            # Initialize the newly created Line2D object to be part of the artists
+            # prop collection as well as set the transform for the axes
             self._tick1line.set_transform(self.axes.get_xaxis_transform(which='tick1'))
             self._set_artist_props(self._tick1line)
-
         return self._tick1line
 
     @property
     def tick2line(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing tick2line
+
+        Replaces the legacy property 'tick2line'
+        Function masked as a property for backwards compatability
         """
         if self._tick2line is None:
             self._tick2line = self._tick2collection.get_line(self._tickid)
+
+            # Initialize the newly created Line2D object to be part of the artists
+            # prop collection as well as set the transform for the axes
             self._tick2line.set_transform(self.axes.get_xaxis_transform(which='tick2'))
             self._set_artist_props(self._tick2line)
         return self._tick2line
@@ -426,10 +450,17 @@ class XTick(Tick):
     @property
     def gridline(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing gridline
+
+        Replaces the legacy property 'gridline'
+        Function masked as a property for backwards compatability
         """
         if self._gridline is None:
             self._gridline = self._gridcollection.get_line(self._tickid)
+
+            # Initialize the newly created Line2D object to be part of the artists
+            # prop collection as well as set the transform for the axes
+            # Additionally, adds the interpolation for the gridline
             self._gridline.set_transform(self.axes.get_xaxis_transform(which='grid'))
             self._gridline.get_path()._interpolation_steps = GRIDLINE_INTERPOLATION_STEPS
             self._set_artist_props(self._gridline)
@@ -588,10 +619,16 @@ class YTick(Tick):
     @property
     def tick1line(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing tick1line
+
+        Replaces the legacy property 'tick1line'
+        Function masked as a property for backwards compatability
         """
         if self._tick1line is None:
             self._tick1line = self._tick1collection.get_line(self._tickid)
+
+            # Initialize the newly created Line2D object to be part of the artists
+            # prop collection as well as set the transform for the axes
             self._tick1line.set_transform(self.axes.get_yaxis_transform(which='tick1'))
             self._set_artist_props(self._tick1line)
         return self._tick1line
@@ -599,10 +636,16 @@ class YTick(Tick):
     @property
     def tick2line(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing tick2line
+
+        Replaces the legacy property 'tick2line'
+        Function masked as a property for backwards compatability
         """
         if self._tick2line is None:
             self._tick2line = self._tick2collection.get_line(self._tickid)
+
+            # Initialize the newly created Line2D object to be part of the artists
+            # prop collection as well as set the transform for the axes
             self._tick2line.set_transform(self.axes.get_yaxis_transform(which='tick2'))
             self._set_artist_props(self._tick2line)
         return self._tick2line
@@ -610,10 +653,17 @@ class YTick(Tick):
     @property
     def gridline(self):
         """
-        Get a Line2D instance from the LineCollection
+        Get the Line2D instance from the LineCollection representing gridline
+
+        Replaces the legacy property 'gridline'
+        Function masked as a property for backwards compatability
         """
         if self._gridline is None:
             self._gridline = self._gridcollection.get_line(self._tickid)
+
+            # Initialize the newly created Line2D object to be part of the artists
+            # prop collection as well as set the transform for the axes
+            # Additionally, adds the interpolation for the gridline
             self._gridline.set_transform(self.axes.get_yaxis_transform(which='grid'))
             self._gridline.get_path()._interpolation_steps = GRIDLINE_INTERPOLATION_STEPS
             self._set_artist_props(self._gridline)
@@ -834,7 +884,8 @@ class Axis(artist.Artist):
 
     def _get_new_tick_id(self):
         """
-        Get an unique ID for the next tick
+        Get an unique ID for the next tick, used in order to have a unique
+        key to access the line attributes inside each tick's Line2DCollection
 
         returns: str of the unique ID
         """

@@ -233,37 +233,12 @@ class Line2DCollection(Artist):
     A line collection - a collection of the attributes that make up a 
     line2D object.
 
+    More performant in the case where not all lines in the Tick objects under
+    an Axis must be drawn.
+
 
     """
-
-    lineStyles = _lineStyles = {  # hidden names deprecated
-        '-':    '_draw_solid',
-        '--':   '_draw_dashed',
-        '-.':   '_draw_dash_dot',
-        ':':    '_draw_dotted',
-        'None': '_draw_nothing',
-        ' ':    '_draw_nothing',
-        '':     '_draw_nothing',
-    }
-
-    _drawStyles_l = {
-        'default':    '_draw_lines',
-        'steps-mid':  '_draw_steps_mid',
-        'steps-pre':  '_draw_steps_pre',
-        'steps-post': '_draw_steps_post',
-    }
-
-    _drawStyles_s = {
-        'steps': '_draw_steps_pre',
-    }
-
-    # drawStyles should now be deprecated.
-    drawStyles = {}
-    drawStyles.update(_drawStyles_l)
-    drawStyles.update(_drawStyles_s)
-    # Need a list ordered with long names first:
-    drawStyleKeys = list(_drawStyles_l) + list(_drawStyles_s)
-
+    
     def __init__(self):
         """
         Create a new Line2DCollection instance
@@ -276,24 +251,19 @@ class Line2DCollection(Artist):
         self.dashjoinstyledict = dict()
         self.solidjoinstyledict = dict()
         self.solidcapstyledict = dict()
-
         self.linestyledict = dict()
         self.drawstyledict = dict()
         self.linewidthdict = dict()
-
         self.colordict = dict()
         self.markerdict = dict()
         self.fillstyledict = dict()
-
         self.markeverydict = dict()
         self.markersizedict = dict()
         self.antialiaseddict = dict()
-
         self.markeredgecolordict = dict()
         self.markeredgewidthdict = dict()
         self.markerfacecolordict = dict()
         self.markerfacecoloraltdict = dict()
-
         self.pickradiusdict = dict()
 
         self.xdatadict = dict()
@@ -376,8 +346,57 @@ class Line2DCollection(Artist):
 
         """
         # retrieve all the saved line attributes
+
+        # Ensure the key is in ALL the dicts
+        keyvalid = True
+        if not lineKey in self.xdatadict:
+            keyvalid = False
+        elif not lineKey in self.ydatadict:
+            keyvalid = False
+        elif not lineKey in self.linewidthdict:
+            keyvalid = False
+        elif not lineKey in self.colordict:
+            keyvalid = False
+        elif not lineKey in self.markerdict:
+            keyvalid = False
+        elif not lineKey in self.markersizedict:
+            keyvalid = False
+        elif not lineKey in self.markeredgewidthdict:
+            keyvalid = False
+        elif not lineKey in self.markeredgecolordict:
+            keyvalid = False
+        elif not lineKey in self.markerfacecolordict:
+            keyvalid = False
+        elif not lineKey in self.markerfacecoloraltdict:
+            keyvalid = False
+        elif not lineKey in self.fillstyledict:
+            keyvalid = False
+        elif not lineKey in self.antialiaseddict:
+            keyvalid = False
+        elif not lineKey in self.dashcapstyledict:
+            keyvalid = False
+        elif not lineKey in self.solidcapstyledict:
+            keyvalid = False
+        elif not lineKey in self.dashjoinstyledict:
+            keyvalid = False
+        elif not lineKey in self.solidjoinstyledict:
+            keyvalid = False
+        elif not lineKey in self.pickradiusdict:
+            keyvalid = False
+        elif not lineKey in self.drawstyledict:
+            keyvalid = False
+        elif not lineKey in self.markeverydict:
+            keyvalid = False
+        elif not lineKey in self.kwargsdict:
+            keyvalid = False
+
+        # Raise a runtime error if the key is not present in any dict
+        if not keyValid:
+            raise RuntimeError('key invalid for current Line2DCollection')
+
         xdata = self.xdatadict[lineKey]
         ydata = self.ydatadict[lineKey]
+
         linewidth = self.linewidthdict[lineKey]
         linestyle = self.linestyledict[lineKey]
         color = self.colordict[lineKey]
@@ -396,8 +415,11 @@ class Line2DCollection(Artist):
         pickradius = self.pickradiusdict[lineKey]
         drawstyle = self.drawstyledict[lineKey]
         markevery = self.markeverydict[lineKey]
+
         kwargs = self.kwargsdict[lineKey]
 
+        # In the case where no extra args provided
+        # replace it with an empty dict
         if kwargs is None:
             kwargs = dict()
 

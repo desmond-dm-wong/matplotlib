@@ -418,7 +418,7 @@ class Line2DCollection(Artist):
                       pickradius,
                       drawstyle,
                       markevery,
-                      kwargs
+                      kwargs = kwargs
                       )
 
 class Line2D(Artist):

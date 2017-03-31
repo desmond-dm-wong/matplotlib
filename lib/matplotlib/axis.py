@@ -66,6 +66,7 @@ class Tick(artist.Artist):
 
     """
     def __init__(self, axes, loc, label,
+                 tick1col, tick2col, gridcol, tickid,
                  size=None,  # points
                  width=None,
                  color=None,
@@ -151,9 +152,14 @@ class Tick(artist.Artist):
 
         self.apply_tickdir(tickdir)
 
-        self.tick1line = self._get_tick1line()
-        self.tick2line = self._get_tick2line()
-        self.gridline = self._get_gridline()
+        self._tickid = tickid
+        self._tick1collection = tick1col
+        self._tick2collection = tick2col
+        self._gridcollection = gridcol
+
+        self._add_tick1line()
+        self._add_tick2line()
+        self._add_gridline()
 
         self.label1 = self._get_text1()
         self.label = self.label1  # legacy name
@@ -166,6 +172,33 @@ class Tick(artist.Artist):
         self.label2On = label2On
 
         self.update_position(loc)
+
+    @property
+    def tick1line(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._tick1line is None:
+            self._tick1line = self._tick1collection.get_line(self._tickid)
+        return self._tick1line
+
+    @property
+    def tick2line(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._tick2line is None:
+            self._tick2line = self._tick2collection.get_line(self._tickid)
+        return self._tick2line
+
+    @property
+    def gridline(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._gridline is None:
+            self._gridline = self._gridcollection.get_line(self._tickid)
+        return self._gridline
 
     def apply_tickdir(self, tickdir):
         """
@@ -415,6 +448,35 @@ class XTick(Tick):
         self._set_artist_props(t)
         return t
 
+    def _add_tick1line(self):
+        'adds the default line attributes to the tick1line collection'
+        # x in data coords, y in axes coords
+        self._tick1collection.add_line(lineKey = self.tickid, xdata=(0,), ydata=(0,), color=self._color,
+                                       linestyle='None', marker=self._tickmarkers[0],
+                                       markersize=self._size,
+                                       markeredgewidth=self._width, zorder=self._zorder)
+
+    def _add_tick2line(self):
+        'adds the default line attributes to the tick2line collection'
+        # x in data coords, y in axes coords
+        self._tick2collection.add_line(lineKey = self.tickid, xdata=(0,), ydata=(1,),
+                                       color=self._color,
+                                       linestyle='None',
+                                       marker=self._tickmarkers[1],
+                                       markersize=self._size,
+                                       markeredgewidth=self._width,
+                                       zorder=self._zorder)
+
+    def _add_gridline(self):
+        'adds the default line attributes to the grid collection'
+        # x in data coords, y in axes coords
+        self._tick2collection.add_line(lineKey = self.tickid, xdata=(0.0, 0.0), ydata=(0, 1.0),
+                                       color=rcParams['grid.color'],
+                                       linestyle=rcParams['grid.linestyle'],
+                                       linewidth=rcParams['grid.linewidth'],
+                                       alpha=rcParams['grid.alpha'],
+                                       markersize=0)
+
     def _get_tick1line(self):
         'Get the default line2D instance'
         # x in data coords, y in axes coords
@@ -453,7 +515,6 @@ class XTick(Tick):
         l.set_transform(self.axes.get_xaxis_transform(which='grid'))
         l.get_path()._interpolation_steps = GRIDLINE_INTERPOLATION_STEPS
         self._set_artist_props(l)
-
         return l
 
     def update_position(self, loc):
@@ -534,6 +595,38 @@ class YTick(Tick):
         t.set_transform(trans)
         self._set_artist_props(t)
         return t
+
+    def _add_tick1line(self):
+        'adds the default line attributes to the tick1line collection'
+        # x in axes coords, y in data coords
+        self._tick1collection.add_line(lineKey = self.tickid,xdata=(0,),ydata=(0,),
+                                      color=self._color,
+                                      marker=self._tickmarkers[0],
+                                      linestyle='None',
+                                      markersize=self._size,
+                                      markeredgewidth=self._width,
+                                      zorder=self._zorder)
+
+    def _add_tick2line(self):
+        'adds the default line attributes to the tick2line collection'
+        # x in axes coords, y in data coords
+        self._tick2collection.add_line(lineKey = self.tickid,xdata=(1,),ydata=(0,),
+                                      color=self._color,
+                                      marker=self._tickmarkers[1],
+                                      linestyle='None',
+                                      markersize=self._size,
+                                      markeredgewidth=self._width,
+                                      zorder=self._zorder)
+
+    def _add_gridline(self):
+        'adds the default line attributes to the grid collection'
+        # x in axes coords, y in data coords
+        self._gridcollection.add_line(lineKey = self.tickid, xdata=(0, 1), ydata=(0, 0),
+                                      color=rcParams['grid.color'],
+                                      linestyle=rcParams['grid.linestyle'],
+                                      linewidth=rcParams['grid.linewidth'],
+                                      alpha=rcParams['grid.alpha'],
+                                      markersize=0)
 
     def _get_tick1line(self):
         'Get the default line2D instance'

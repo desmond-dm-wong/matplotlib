@@ -246,52 +246,52 @@ class Line2DCollection(Artist):
 
         # initialize all Line2DCollection attribute
         # collections
-        self._dashcapstyle[lineKey] = {}
-        self._dashjoinstyle[lineKey] = {}
-        self._solidjoinstyle[lineKey] = {}
-        self._solidcapstyle[lineKey] = {}
+        self._dashcapstyle[lineKey] = dict()
+        self._dashjoinstyle[lineKey] = dict()
+        self._solidjoinstyle[lineKey] = dict()
+        self._solidcapstyle[lineKey] = dict()
 
-        self._linestyles[lineKey] = {}
-        self._drawstyle[lineKey] = {}
-        self._linewidth[lineKey] = {}
+        self._linestyles[lineKey] = dict()
+        self._drawstyle[lineKey] = dict()
+        self._linewidth[lineKey] = dict()
 
-        self._dashSeq[lineKey] = {}
-        self._dashOffset[lineKey] = {}
+        self._dashSeq[lineKey] = dict()
+        self._dashOffset[lineKey] = dict()
 
-        self._us_dashSeq[lineKey] = {}
-        self._us_dashOffset[lineKey] = {}
+        self._us_dashSeq[lineKey] = dict()
+        self._us_dashOffset[lineKey] = dict()
 
-        self._color[lineKey] = {}
-        self._marker[lineKey] = {}
+        self._color[lineKey] = dict()
+        self._marker[lineKey] = dict()
 
-        self._markevery[lineKey] = {}
-        self._markersize[lineKey] = {}
-        self._antialiased[lineKey] = {}
+        self._markevery[lineKey] = dict()
+        self._markersize[lineKey] = dict()
+        self._antialiased[lineKey] = dict()
 
-        self._markeredgecolor[lineKey] = {}
-        self._markeredgewidth[lineKey] = {}
-        self._markerfacecolor[lineKey] = {}
-        self._markerfacecoloralt[lineKey] = {}
+        self._markeredgecolor[lineKey] = dict()
+        self._markeredgewidth[lineKey] = dict()
+        self._markerfacecolor[lineKey] = dict()
+        self._markerfacecoloralt[lineKey] = dict()
 
-        self.verticalOffset[lineKey] = {}
+        self.verticalOffset[lineKey] = dict()
 
-        self.pickradius[lineKey] = {}
-        self.ind_offset[lineKey] = {}
+        self.pickradius[lineKey] = dict()
+        self.ind_offset[lineKey] = dict()
 
-        self._xorig[lineKey] = {}
-        self._yorig[lineKey] = {}
-        self._invalidx[lineKey] = {}
-        self._invalidy[lineKey] = {}
-        self._x[lineKey] = {}
-        self._y[lineKey] = {}
-        self._xy[lineKey] = {}
-        self._path[lineKey] = {}
-        self._transformed_path[lineKey] = {}
-        self._subslice[lineKey] = {}
-        self._x_filled[lineKey] = {}  
+        self._xorig[lineKey] = dict()
+        self._yorig[lineKey] = dict()
+        self._invalidx[lineKey] = dict()
+        self._invalidy[lineKey] = dict()
+        self._x[lineKey] = dict()
+        self._y[lineKey] = dict()
+        self._xy[lineKey] = dict()
+        self._path[lineKey] = dict()
+        self._transformed_path[lineKey] = dict()
+        self._subslice[lineKey] = dict()
+        self._x_filled[lineKey] = dict()  
 
-        self._xdata[lineKey] = {}
-        self._ydata[lineKey] = {}
+        self._xdata[lineKey] = dict()
+        self._ydata[lineKey] = dict()
 
     def add_line(self, lineKey,   # key for the line
                  xdata, ydata,

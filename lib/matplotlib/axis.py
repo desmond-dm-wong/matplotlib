@@ -296,13 +296,10 @@ class Tick(artist.Artist):
 
         renderer.open_group(self.__name__)
         if self.gridOn:
-            print(self.gridline)
             self.gridline.draw(renderer)
         if self.tick1On:
-            print(self.tick1line)
             self.tick1line.draw(renderer)
         if self.tick2On:
-            print(self.tick2line)
             self.tick2line.draw(renderer)
 
         if self.label1On:
@@ -597,7 +594,6 @@ class YTick(Tick):
             self._tick1line = self._tick1collection.get_line(self._tickid)
             self._tick1line.set_transform(self.axes.get_yaxis_transform(which='tick1'))
             self._set_artist_props(self._tick1line)
-
         return self._tick1line
 
     @property
@@ -620,7 +616,7 @@ class YTick(Tick):
             self._gridline = self._gridcollection.get_line(self._tickid)
             self._gridline.set_transform(self.axes.get_yaxis_transform(which='grid'))
             self._gridline.get_path()._interpolation_steps = GRIDLINE_INTERPOLATION_STEPS
-            self._set_artist_props(self._gridline)
+            self._set_artist_props(l)
         return self._gridline
 
     def _get_text1_transform(self):

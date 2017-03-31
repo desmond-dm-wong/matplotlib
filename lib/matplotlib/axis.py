@@ -475,7 +475,7 @@ class XTick(Tick):
     def _add_gridline(self):
         'adds the default line attributes to the grid collection'
         # x in data coords, y in axes coords
-        self._tick2collection.add_line(lineKey = self._tickid, xdata=(0.0, 0.0), ydata=(0, 1.0),
+        self._gridcollection.add_line(lineKey = self._tickid, xdata=(0.0, 0.0), ydata=(0, 1.0),
                                        color=rcParams['grid.color'],
                                        linestyle=rcParams['grid.linestyle'],
                                        linewidth=rcParams['grid.linewidth'],

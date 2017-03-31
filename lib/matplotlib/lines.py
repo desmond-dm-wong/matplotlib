@@ -228,6 +228,188 @@ def _mark_every_path(markevery, tpath, affine, ax_transform):
             'recognized; '
             'markevery=%s' % (markevery,))
 
+class Line2DCollection(Artist):
+    """
+    A line collection - a collection of the attributes that make up a 
+    line2D object.
+
+
+    """
+
+    drawStyleKeys = list(Line2D._drawStyles_l) + list(Line2D._drawStyles_s)
+
+    def __init__(self):
+        """
+        Create a new Line2DCollection instance
+        """
+        Artist.__init__(self)
+
+        # initialize all Line2DCollection attribute
+        # collections
+        self._dashcapstyle[lineKey] = {}
+        self._dashjoinstyle[lineKey] = {}
+        self._solidjoinstyle[lineKey] = {}
+        self._solidcapstyle[lineKey] = {}
+
+        self._linestyles[lineKey] = {}
+        self._drawstyle[lineKey] = {}
+        self._linewidth[lineKey] = {}
+
+        self._dashSeq[lineKey] = {}
+        self._dashOffset[lineKey] = {}
+
+        self._us_dashSeq[lineKey] = {}
+        self._us_dashOffset[lineKey] = {}
+
+        self._color[lineKey] = {}
+        self._marker[lineKey] = {}
+
+        self._markevery[lineKey] = {}
+        self._markersize[lineKey] = {}
+        self._antialiased[lineKey] = {}
+
+        self._markeredgecolor[lineKey] = {}
+        self._markeredgewidth[lineKey] = {}
+        self._markerfacecolor[lineKey] = {}
+        self._markerfacecoloralt[lineKey] = {}
+
+        self.verticalOffset[lineKey] = {}
+
+        self.pickradius[lineKey] = {}
+        self.ind_offset[lineKey] = {}
+
+        self._xorig[lineKey] = {}
+        self._yorig[lineKey] = {}
+        self._invalidx[lineKey] = {}
+        self._invalidy[lineKey] = {}
+        self._x[lineKey] = {}
+        self._y[lineKey] = {}
+        self._xy[lineKey] = {}
+        self._path[lineKey] = {}
+        self._transformed_path[lineKey] = {}
+        self._subslice[lineKey] = {}
+        self._x_filled[lineKey] = {}  
+
+        self._xdata[lineKey] = {}
+        self._ydata[lineKey] = {}
+
+    def add_line(self, lineKey,   # key for the line
+                 xdata, ydata,
+                 linewidth=None,  # all Nones default to rc
+                 linestyle=None,
+                 color=None,
+                 marker=None,
+                 markersize=None,
+                 markeredgewidth=None,
+                 markeredgecolor=None,
+                 markerfacecolor=None,
+                 markerfacecoloralt='none',
+                 fillstyle=None,
+                 antialiased=None,
+                 dash_capstyle=None,
+                 solid_capstyle=None,
+                 dash_joinstyle=None,
+                 solid_joinstyle=None,
+                 pickradius=5,
+                 drawstyle=None,
+                 markevery=None
+                 ):
+        """
+        Add a new line entry to the Line2DCollection with *x*
+        and *y* data in sequences *xdata*, *ydata*.
+
+        See :meth:`set_linestyle` for a decription of the line styles,
+        :meth:`set_marker` for a description of the markers, and
+        :meth:`set_drawstyle` for a description of the draw styles.
+
+        """
+        #convert sequences to numpy arrays
+        if not iterable(xdata):
+            raise RuntimeError('xdata must be a sequence')
+        if not iterable(ydata):
+            raise RuntimeError('ydata must be a sequence')
+
+        self.dashcapstyledict[lineKey] = dash_capstyle
+        self.dashjoinstyledict[lineKey] = dash_joinstyle
+        self.solidjoinstyledict[lineKey] = solid_capstyle
+        self.solidcapstyledict[lineKey] = solid_joinstyle
+
+        self.linestyledict[lineKey] = linestyle
+        self.drawstyledict[lineKey] = drawstyle
+        self.linewidthdict[lineKey] = linewidth
+
+        self.colordict[lineKey] = color
+        self.markerdict[lineKey] = marker
+        self.fillstyledict[lineKey] = fillstyle
+
+        self.markeverydict[lineKey] = markevery
+        self.markersizedict[lineKey] = markersize
+        self.antialiaseddict[lineKey] = antialiased
+
+        self.markeredgecolordict[lineKey] = markeredgecolor
+        self.markeredgewidthdict[lineKey] = markeredgewidth
+        self.markerfacecolordict[lineKey] = markerfacecolor
+        self.markerfacecoloraltdict[lineKey] = markerfacecoloralt
+
+        self.pickradiusdict[lineKey] = pickradius
+
+        # save the xdata and ydata, will set flags upon use
+        self.xdatadict[lineKey] = xdata
+        self.ydatadict[lineKey] = ydata
+
+        # save the kwargs and update upon use
+        self.kwargsdict[lineKey] = kwargs
+
+    def get_line(self, lineKey):
+        """
+        Get a new Line2D instance from the attributes in the 
+        Line2DCollection accessed at key 'lineKey'
+
+        """
+        # retrieve all the saved line attributes
+        xdata = xdatadict[lineKey]
+        ydata = xdatadict[lineKey]
+        linewidth = linewidthdict[lineKey]
+        linestyle = linestyledict[lineKey]
+        color = colordict[lineKey]
+        marker = markerdict[lineKey]
+        markersize = markersizedict[lineKey]
+        markeredgewidth = markeredgewidthdict[lineKey]
+        markeredgecolor = markeredgecolordict[lineKey]
+        markerfacecolor = markerfacecolordict[lineKey]
+        markerfacecoloralt = markerfacecoloraltdict[lineKey]
+        fillstyle = fillstyledict[lineKey]
+        antialiased = antialiaseddict[lineKey]
+        dash_capstyle = dashcapstyledict[lineKey]
+        solid_capstyle = solidcapstyledict[lineKey]
+        dash_joinstyle = dashjoinstyledict[lineKey]
+        solid_joinstyle = solidjoinstyledict[lineKey]
+        pickradius = pickradiusdict[lineKey]
+        drawstyle = drawstyledict[lineKey]
+        markevery = markeverydict[lineKey]
+        kwargs = kwargsdict[lineKey]
+
+        # create a new Line2D object
+        return Line2D(xdata, ydata,
+                      linewidth,
+                      linestyle,
+                      color,
+                      marker,
+                      markersize,
+                      markeredgewidth,
+                      markeredgecolor,
+                      markerfacecolor,
+                      markerfacecoloralt,
+                      fillstyle,
+                      antialiased,
+                      dash_capstyle,
+                      solid_capstyle,
+                      dash_joinstyle,
+                      solid_joinstyle,
+                      pickradius,
+                      drawstyle,
+                      markevery,
+                      kwargs)
 
 class Line2D(Artist):
     """

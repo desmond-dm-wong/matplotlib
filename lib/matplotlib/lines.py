@@ -301,6 +301,8 @@ class Line2DCollection(Artist):
 
         self.kwargsdict = dict()
 
+        self.zorderdict = dict()
+
     def add_line(self, lineKey,   # key for the line
                  xdata, ydata,
                  linewidth=None,  # all Nones default to rc
@@ -320,7 +322,8 @@ class Line2DCollection(Artist):
                  solid_joinstyle=None,
                  pickradius=5,
                  drawstyle=None,
-                 markevery=None
+                 markevery=None,
+                 **kwargs
                  ):
         """
         Add a new line entry to the Line2DCollection with *x*
@@ -417,7 +420,8 @@ class Line2DCollection(Artist):
                       pickradius,
                       drawstyle,
                       markevery,
-                      kwargs)
+                      kwargs
+                      )
 
 class Line2D(Artist):
     """

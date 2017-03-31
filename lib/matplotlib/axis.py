@@ -158,6 +158,10 @@ class Tick(artist.Artist):
         self._tick2collection = tick2col
         self._gridcollection = gridcol
 
+        self._tick1line = None
+        self._tick2line = None
+        self._gridline = None
+
         self._add_tick1line()
         self._add_tick2line()
         self._add_gridline()

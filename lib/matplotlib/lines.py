@@ -238,7 +238,7 @@ class Line2DCollection(Artist):
 
 
     """
-    
+
     def __init__(self):
         """
         Create a new Line2DCollection instance
@@ -391,7 +391,7 @@ class Line2DCollection(Artist):
             keyvalid = False
 
         # Raise a runtime error if the key is not present in any dict
-        if not keyValid:
+        if not keyvalid:
             raise RuntimeError('key invalid for current Line2DCollection')
 
         xdata = self.xdatadict[lineKey]

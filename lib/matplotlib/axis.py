@@ -452,7 +452,7 @@ class XTick(Tick):
     def _add_tick1line(self):
         'adds the default line attributes to the tick1line collection'
         # x in data coords, y in axes coords
-        self._tick1collection.add_line(lineKey = self.tickid, xdata=(0,), ydata=(0,), color=self._color,
+        self._tick1collection.add_line(lineKey = self._tickid, xdata=(0,), ydata=(0,), color=self._color,
                                        linestyle='None', marker=self._tickmarkers[0],
                                        markersize=self._size,
                                        markeredgewidth=self._width, zorder=self._zorder)
@@ -460,7 +460,7 @@ class XTick(Tick):
     def _add_tick2line(self):
         'adds the default line attributes to the tick2line collection'
         # x in data coords, y in axes coords
-        self._tick2collection.add_line(lineKey = self.tickid, xdata=(0,), ydata=(1,),
+        self._tick2collection.add_line(lineKey = self._tickid, xdata=(0,), ydata=(1,),
                                        color=self._color,
                                        linestyle='None',
                                        marker=self._tickmarkers[1],
@@ -471,7 +471,7 @@ class XTick(Tick):
     def _add_gridline(self):
         'adds the default line attributes to the grid collection'
         # x in data coords, y in axes coords
-        self._tick2collection.add_line(lineKey = self.tickid, xdata=(0.0, 0.0), ydata=(0, 1.0),
+        self._tick2collection.add_line(lineKey = self._tickid, xdata=(0.0, 0.0), ydata=(0, 1.0),
                                        color=rcParams['grid.color'],
                                        linestyle=rcParams['grid.linestyle'],
                                        linewidth=rcParams['grid.linewidth'],
@@ -600,7 +600,7 @@ class YTick(Tick):
     def _add_tick1line(self):
         'adds the default line attributes to the tick1line collection'
         # x in axes coords, y in data coords
-        self._tick1collection.add_line(lineKey = self.tickid,xdata=(0,),ydata=(0,),
+        self._tick1collection.add_line(lineKey = self._tickid,xdata=(0,),ydata=(0,),
                                       color=self._color,
                                       marker=self._tickmarkers[0],
                                       linestyle='None',
@@ -611,7 +611,7 @@ class YTick(Tick):
     def _add_tick2line(self):
         'adds the default line attributes to the tick2line collection'
         # x in axes coords, y in data coords
-        self._tick2collection.add_line(lineKey = self.tickid,xdata=(1,),ydata=(0,),
+        self._tick2collection.add_line(lineKey = self._tickid,xdata=(1,),ydata=(0,),
                                       color=self._color,
                                       marker=self._tickmarkers[1],
                                       linestyle='None',
@@ -622,7 +622,7 @@ class YTick(Tick):
     def _add_gridline(self):
         'adds the default line attributes to the grid collection'
         # x in axes coords, y in data coords
-        self._gridcollection.add_line(lineKey = self.tickid, xdata=(0, 1), ydata=(0, 0),
+        self._gridcollection.add_line(lineKey = self._tickid, xdata=(0, 1), ydata=(0, 0),
                                       color=rcParams['grid.color'],
                                       linestyle=rcParams['grid.linestyle'],
                                       linewidth=rcParams['grid.linewidth'],

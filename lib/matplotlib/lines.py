@@ -272,52 +272,34 @@ class Line2DCollection(Artist):
 
         # initialize all Line2DCollection attribute
         # collections
-        self._dashcapstyle[lineKey] = dict()
-        self._dashjoinstyle[lineKey] = dict()
-        self._solidjoinstyle[lineKey] = dict()
-        self._solidcapstyle[lineKey] = dict()
+        self.dashcapstyledict = dict()
+        self.dashjoinstyledict = dict()
+        self.solidjoinstyledict = dict()
+        self.solidcapstyledict = dict()
 
-        self._linestyles[lineKey] = dict()
-        self._drawstyle[lineKey] = dict()
-        self._linewidth[lineKey] = dict()
+        self.linestyledict = dict()
+        self.drawstyledict = dict()
+        self.linewidthdict = dict()
 
-        self._dashSeq[lineKey] = dict()
-        self._dashOffset[lineKey] = dict()
+        self.colordict = dict()
+        self.markerdict = dict()
+        self.fillstyledict = dict()
 
-        self._us_dashSeq[lineKey] = dict()
-        self._us_dashOffset[lineKey] = dict()
+        self.markeverydict = dict()
+        self.markersizedict = dict()
+        self.antialiaseddict = dict()
 
-        self._color[lineKey] = dict()
-        self._marker[lineKey] = dict()
+        self.markeredgecolordict = dict()
+        self.markeredgewidthdict = dict()
+        self.markerfacecolordict = dict()
+        self.markerfacecoloraltdict = dict()
 
-        self._markevery[lineKey] = dict()
-        self._markersize[lineKey] = dict()
-        self._antialiased[lineKey] = dict()
+        self.pickradiusdict = dict()
 
-        self._markeredgecolor[lineKey] = dict()
-        self._markeredgewidth[lineKey] = dict()
-        self._markerfacecolor[lineKey] = dict()
-        self._markerfacecoloralt[lineKey] = dict()
+        self.xdatadict = dict()
+        self.ydatadict = dict()
 
-        self.verticalOffset[lineKey] = dict()
-
-        self.pickradius[lineKey] = dict()
-        self.ind_offset[lineKey] = dict()
-
-        self._xorig[lineKey] = dict()
-        self._yorig[lineKey] = dict()
-        self._invalidx[lineKey] = dict()
-        self._invalidy[lineKey] = dict()
-        self._x[lineKey] = dict()
-        self._y[lineKey] = dict()
-        self._xy[lineKey] = dict()
-        self._path[lineKey] = dict()
-        self._transformed_path[lineKey] = dict()
-        self._subslice[lineKey] = dict()
-        self._x_filled[lineKey] = dict()  
-
-        self._xdata[lineKey] = dict()
-        self._ydata[lineKey] = dict()
+        self.kwargsdict = dict()
 
     def add_line(self, lineKey,   # key for the line
                  xdata, ydata,

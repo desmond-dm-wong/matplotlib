@@ -1834,10 +1834,10 @@ class XAxis(Axis):
             tick_kw = self._major_tick_kw
         else:
             tick_kw = self._minor_tick_kw
-        return XTick(self.axes,
+        return XTick(self.axes, 0, '',
                      self._tick1collection, self._tick2collection,
                      self._gridcollection, self._get_new_tick_id(),
-                     0, '', major=major, **tick_kw)
+                     major=major, **tick_kw)
 
     def _get_label(self):
         # x in axes coords, y in display coords (to be updated at draw
@@ -2168,10 +2168,10 @@ class YAxis(Axis):
             tick_kw = self._major_tick_kw
         else:
             tick_kw = self._minor_tick_kw
-        return YTick(self.axes,
+        return YTick(self.axes, 0, '',
                      self._tick1collection, self._tick2collection,
                      self._gridcollection, self._get_new_tick_id(),
-                     0, '', major=major, **tick_kw)
+                     major=major, **tick_kw)
 
     def _get_label(self):
         # x in display coords (updated by _update_label_position)

@@ -299,10 +299,10 @@ class Tick(artist.Artist):
             print(self.gridline)
             self.gridline.draw(renderer)
         if self.tick1On:
-            print(self.tick1On)
+            print(self.tick1line)
             self.tick1line.draw(renderer)
         if self.tick2On:
-            print(self.tick2On)
+            print(self.tick2line)
             self.tick2line.draw(renderer)
 
         if self.label1On:
@@ -402,6 +402,41 @@ class XTick(Tick):
     the label text and the grid line
     """
     __name__ = 'xtick'
+
+    @property
+    def tick1line(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._tick1line is None:
+            self._tick1line = self._tick1collection.get_line(self._tickid)
+            self._tick1line.set_transform(self.axes.get_xaxis_transform(which='tick1'))
+            self._set_artist_props(self._tick1line)
+
+        return self._tick1line
+
+    @property
+    def tick2line(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._tick2line is None:
+            self._tick2line = self._tick2collection.get_line(self._tickid)
+            self._tick2line.set_transform(self.axes.get_xaxis_transform(which='tick2'))
+            self._set_artist_props(self._tick2line)
+        return self._tick2line
+
+    @property
+    def gridline(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._gridline is None:
+            self._gridline = self._gridcollection.get_line(self._tickid)
+            self._gridline.set_transform(self.axes.get_xaxis_transform(which='grid'))
+            self._gridline.get_path()._interpolation_steps = GRIDLINE_INTERPOLATION_STEPS
+            self._set_artist_props(self._gridline)
+        return self._gridline
 
     def _get_text1_transform(self):
         return self.axes.get_xaxis_text1_transform(self._pad)
@@ -552,6 +587,41 @@ class YTick(Tick):
     the label text and the grid line
     """
     __name__ = 'ytick'
+
+    @property
+    def tick1line(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._tick1line is None:
+            self._tick1line = self._tick1collection.get_line(self._tickid)
+            self._tick1line.set_transform(self.axes.get_yaxis_transform(which='tick1'))
+            self._set_artist_props(self._tick1line)
+
+        return self._tick1line
+
+    @property
+    def tick2line(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._tick2line is None:
+            self._tick2line = self._tick2collection.get_line(self._tickid)
+            self._tick2line.set_transform(self.axes.get_yaxis_transform(which='tick2'))
+            self._set_artist_props(self._tick2line)
+        return self._tick2line
+
+    @property
+    def gridline(self):
+        """
+        Get a Line2D instance from the LineCollection
+        """
+        if self._gridline is None:
+            self._gridline = self._gridcollection.get_line(self._tickid)
+            self._gridline.set_transform(self.axes.get_yaxis_transform(which='grid'))
+            self._gridline.get_path()._interpolation_steps = GRIDLINE_INTERPOLATION_STEPS
+            self._set_artist_props(self._gridline)
+        return self._gridline
 
     def _get_text1_transform(self):
         return self.axes.get_yaxis_text1_transform(self._pad)

@@ -301,8 +301,6 @@ class Line2DCollection(Artist):
 
         self.kwargsdict = dict()
 
-        self.zorderdict = dict()
-
     def add_line(self, lineKey,   # key for the line
                  xdata, ydata,
                  linewidth=None,  # all Nones default to rc
@@ -378,27 +376,27 @@ class Line2DCollection(Artist):
 
         """
         # retrieve all the saved line attributes
-        xdata = xdatadict[lineKey]
-        ydata = xdatadict[lineKey]
-        linewidth = linewidthdict[lineKey]
-        linestyle = linestyledict[lineKey]
-        color = colordict[lineKey]
-        marker = markerdict[lineKey]
-        markersize = markersizedict[lineKey]
-        markeredgewidth = markeredgewidthdict[lineKey]
-        markeredgecolor = markeredgecolordict[lineKey]
-        markerfacecolor = markerfacecolordict[lineKey]
-        markerfacecoloralt = markerfacecoloraltdict[lineKey]
-        fillstyle = fillstyledict[lineKey]
-        antialiased = antialiaseddict[lineKey]
-        dash_capstyle = dashcapstyledict[lineKey]
-        solid_capstyle = solidcapstyledict[lineKey]
-        dash_joinstyle = dashjoinstyledict[lineKey]
-        solid_joinstyle = solidjoinstyledict[lineKey]
-        pickradius = pickradiusdict[lineKey]
-        drawstyle = drawstyledict[lineKey]
-        markevery = markeverydict[lineKey]
-        kwargs = kwargsdict[lineKey]
+        xdata = self.xdatadict[lineKey]
+        ydata = self.xdatadict[lineKey]
+        linewidth = self.linewidthdict[lineKey]
+        linestyle = self.linestyledict[lineKey]
+        color = self.colordict[lineKey]
+        marker = self.markerdict[lineKey]
+        markersize = self.markersizedict[lineKey]
+        markeredgewidth = self.markeredgewidthdict[lineKey]
+        markeredgecolor = self.markeredgecolordict[lineKey]
+        markerfacecolor = self.markerfacecolordict[lineKey]
+        markerfacecoloralt = self.markerfacecoloraltdict[lineKey]
+        fillstyle = self.fillstyledict[lineKey]
+        antialiased = self.antialiaseddict[lineKey]
+        dash_capstyle = self.dashcapstyledict[lineKey]
+        solid_capstyle = self.solidcapstyledict[lineKey]
+        dash_joinstyle = self.dashjoinstyledict[lineKey]
+        solid_joinstyle = self.solidjoinstyledict[lineKey]
+        pickradius = self.pickradiusdict[lineKey]
+        drawstyle = self.drawstyledict[lineKey]
+        markevery = self.markeverydict[lineKey]
+        kwargs = self.kwargsdict[lineKey]
 
         # create a new Line2D object
         return Line2D(xdata, ydata,

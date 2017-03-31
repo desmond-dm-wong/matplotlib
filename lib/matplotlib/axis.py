@@ -21,6 +21,7 @@ import matplotlib.transforms as mtransforms
 import matplotlib.units as munits
 import numpy as np
 import warnings
+import uuid
 
 GRIDLINE_INTERPOLATION_STEPS = 180
 
@@ -739,6 +740,13 @@ class Axis(artist.Artist):
         self.label = self._get_label()
         self.labelpad = rcParams['axes.labelpad']
         self.offsetText = self._get_offset_text()
+
+        # Initialize new Line2DCollections for each tick type
+        # in order to keep track of the lines used in the ticks
+        self._tick1collection = Line2DCollection()
+        self._tick2collection = Line2DCollection()
+        self._gridcollection = Line2DCollection()
+
         self.majorTicks = []
         self.minorTicks = []
         self.unit_data = None
@@ -750,6 +758,14 @@ class Axis(artist.Artist):
 
         self.cla()
         self._set_scale('linear')
+
+    def _get_new_tick_id():
+        """
+        Get an unique ID for the next tick
+
+        returns: str of the unique ID
+        """
+        return str(uuid.uuid1())
 
     def set_label_coords(self, x, y, transform=None):
         """
@@ -1818,7 +1834,10 @@ class XAxis(Axis):
             tick_kw = self._major_tick_kw
         else:
             tick_kw = self._minor_tick_kw
-        return XTick(self.axes, 0, '', major=major, **tick_kw)
+        return XTick(self.axes,
+                     self._tick1collection, self._tick2collection,
+                     self._gridcollection, self._get_new_tick_id(),
+                     0, '', major=major, **tick_kw)
 
     def _get_label(self):
         # x in axes coords, y in display coords (to be updated at draw
@@ -2149,7 +2168,10 @@ class YAxis(Axis):
             tick_kw = self._major_tick_kw
         else:
             tick_kw = self._minor_tick_kw
-        return YTick(self.axes, 0, '', major=major, **tick_kw)
+        return YTick(self.axes,
+                     self._tick1collection, self._tick2collection,
+                     self._gridcollection, self._get_new_tick_id(),
+                     0, '', major=major, **tick_kw)
 
     def _get_label(self):
         # x in display coords (updated by _update_label_position)

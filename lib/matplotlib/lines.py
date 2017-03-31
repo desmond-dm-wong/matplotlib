@@ -398,6 +398,9 @@ class Line2DCollection(Artist):
         markevery = self.markeverydict[lineKey]
         kwargs = self.kwargsdict[lineKey]
 
+        if kwargs is None:
+            kwargs = dict()
+
         # create a new Line2D object
         return Line2D(xdata, ydata,
                       linewidth,
@@ -418,7 +421,7 @@ class Line2DCollection(Artist):
                       pickradius,
                       drawstyle,
                       markevery,
-                      kwargs = kwargs
+                      **kwargs
                       )
 
 class Line2D(Artist):

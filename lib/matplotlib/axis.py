@@ -296,10 +296,13 @@ class Tick(artist.Artist):
 
         renderer.open_group(self.__name__)
         if self.gridOn:
+            print(self.gridline)
             self.gridline.draw(renderer)
         if self.tick1On:
+            print(self.tick1On)
             self.tick1line.draw(renderer)
         if self.tick2On:
+            print(self.tick2On)
             self.tick2line.draw(renderer)
 
         if self.label1On:

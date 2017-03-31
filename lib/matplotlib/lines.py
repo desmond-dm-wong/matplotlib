@@ -31,6 +31,39 @@ from .markers import (
     CARETLEFTBASE, CARETRIGHTBASE, CARETUPBASE, CARETDOWNBASE,
     TICKLEFT, TICKRIGHT, TICKUP, TICKDOWN)
 
+def _split_drawstyle_linestyle(ls, draw_style_keys):
+    '''Split drawstyle from linestyle string
+
+    If `ls` is only a drawstyle default to returning a linestyle
+    of '-'.
+
+    Parameters
+    ----------
+    ls : str
+        The linestyle to be processed
+    draw_style_keys : list of str
+        The draw style keys of the line
+
+    Returns
+    -------
+    ret_ds : str or None
+        If the linestyle string does not contain a drawstyle prefix
+        return None, otherwise return it.
+
+    ls : str
+        The linestyle with the drawstyle (if any) stripped.
+    '''
+    ret_ds = None
+    for ds in draw_style_keys:  # long names are first in the list
+        if ls.startswith(ds):
+            ret_ds = ds
+            if len(ls) > len(ds):
+                ls = ls[len(ds):]
+            else:
+                ls = '-'
+            break
+
+    return ret_ds, ls
 
 def _get_dash_pattern(style):
     """Convert linestyle -> dash pattern
@@ -229,6 +262,190 @@ def _mark_every_path(markevery, tpath, affine, ax_transform):
             'markevery=%s' % (markevery,))
 
 
+class Line2DCollection(Artist):
+    """
+    A line collection - a collection of the attributes that make up a 
+    line2D object.
+
+
+    """
+
+    drawStyleKeys = list(Line2D._drawStyles_l) + list(Line2D._drawStyles_s)
+
+    def __init__(self):
+        """
+        Create a new Line2DCollection instance
+        """
+        Artist.__init__(self)
+
+        # initialize all Line2DCollection attribute
+        # collections
+        self._dashcapstyle[lineKey] = {}
+        self._dashjoinstyle[lineKey] = {}
+        self._solidjoinstyle[lineKey] = {}
+        self._solidcapstyle[lineKey] = {}
+
+        self._linestyles[lineKey] = {}
+        self._drawstyle[lineKey] = {}
+        self._linewidth[lineKey] = {}
+
+        self._dashSeq[lineKey] = {}
+        self._dashOffset[lineKey] = {}
+
+
+        self._us_dashSeq[lineKey] = {}
+        self._us_dashOffset[lineKey] = {}
+
+        self._color[lineKey] = {}
+        self._marker[lineKey] = {}
+
+        self._markevery[lineKey] = {}
+        self._markersize[lineKey] = {}
+        self._antialiased[lineKey] = {}
+
+        self._markeredgecolor[lineKey] = {}
+        self._markeredgewidth[lineKey] = {}
+        self._markerfacecolor[lineKey] = {}
+        self._markerfacecoloralt[lineKey] = {}
+
+        self.verticalOffset[lineKey] = {}
+
+        self.pickradius[lineKey] = {}
+        self.ind_offset[lineKey] = {}
+
+        self._xorig[lineKey] = {}
+        self._yorig[lineKey] = {}
+        self._invalidx[lineKey] = {}
+        self._invalidy[lineKey] = {}
+        self._x[lineKey] = {}
+        self._y[lineKey] = {}
+        self._xy[lineKey] = {}
+        self._path[lineKey] = {}
+        self._transformed_path[lineKey] = {}
+        self._subslice[lineKey] = {}
+        self._x_filled[lineKey] = {}  
+
+        self._xdata[lineKey] = {}
+        self._ydata[lineKey] = {}
+
+    def add_line(self, lineKey,   # key for the line
+                 xdata, ydata,
+                 linewidth=None,  # all Nones default to rc
+                 linestyle=None,
+                 color=None,
+                 marker=None,
+                 markersize=None,
+                 markeredgewidth=None,
+                 markeredgecolor=None,
+                 markerfacecolor=None,
+                 markerfacecoloralt='none',
+                 fillstyle=None,
+                 antialiased=None,
+                 dash_capstyle=None,
+                 solid_capstyle=None,
+                 dash_joinstyle=None,
+                 solid_joinstyle=None,
+                 pickradius=5,
+                 drawstyle=None,
+                 markevery=None
+                 ):
+        """
+        Add a new line entry to the Line2DCollection with *x*
+        and *y* data in sequences *xdata*, *ydata*.
+
+        See :meth:`set_linestyle` for a decription of the line styles,
+        :meth:`set_marker` for a description of the markers, and
+        :meth:`set_drawstyle` for a description of the draw styles.
+
+        """
+        #convert sequences to numpy arrays
+        if not iterable(xdata):
+            raise RuntimeError('xdata must be a sequence')
+        if not iterable(ydata):
+            raise RuntimeError('ydata must be a sequence')
+
+        self.dashcapstyledict[lineKey] = dash_capstyle
+        self.dashjoinstyledict[lineKey] = dash_joinstyle
+        self.solidjoinstyledict[lineKey] = solid_capstyle
+        self.solidcapstyledict[lineKey] = solid_joinstyle
+
+        self.linestyledict[lineKey] = linestyle
+        self.drawstyledict[lineKey] = drawstyle
+        self.linewidthdict[lineKey] = linewidth
+
+        self.colordict[lineKey] = color
+        self.markerdict[lineKey] = marker
+        self.fillstyledict[lineKey] = fillstyle
+
+        self.markeverydict[lineKey] = markevery
+        self.markersizedict[lineKey] = markersize
+        self.antialiaseddict[lineKey] = antialiased
+
+        self.markeredgecolordict[lineKey] = markeredgecolor
+        self.markeredgewidthdict[lineKey] = markeredgewidth
+        self.markerfacecolordict[lineKey] = markerfacecolor
+        self.markerfacecoloraltdict[lineKey] = markerfacecoloralt
+
+        self.pickradiusdict[lineKey] = pickradius
+
+        # save the xdata and ydata, will set flags upon use
+        self.xdatadict[lineKey] = xdata
+        self.ydatadict[lineKey] = ydata
+
+        # save the kwargs and update upon use
+        self.kwargsdict[lineKey] = kwargs
+
+    def get_line(self, lineKey):
+        """
+        Get a new Line2D instance from the attributes in the 
+        Line2DCollection accessed at key 'lineKey'
+
+        """
+        # retrieve all the saved line attributes
+        xdata = xdatadict[lineKey]
+        ydata = xdatadict[lineKey]
+        linewidth = linewidthdict[lineKey]
+        linestyle = linestyledict[lineKey]
+        color = colordict[lineKey]
+        marker = markerdict[lineKey]
+        markersize = markersizedict[lineKey]
+        markeredgewidth = markeredgewidthdict[lineKey]
+        markeredgecolor = markeredgecolordict[lineKey]
+        markerfacecolor = markerfacecolordict[lineKey]
+        markerfacecoloralt = markerfacecoloraltdict[lineKey]
+        fillstyle = fillstyledict[lineKey]
+        antialiased = antialiaseddict[lineKey]
+        dash_capstyle = dashcapstyledict[lineKey]
+        solid_capstyle = solidcapstyledict[lineKey]
+        dash_joinstyle = dashjoinstyledict[lineKey]
+        solid_joinstyle = solidjoinstyledict[lineKey]
+        pickradius = pickradiusdict[lineKey]
+        drawstyle = drawstyledict[lineKey]
+        markevery = markeverydict[lineKey]
+        kwargs = kwargsdict[lineKey]
+
+        # create a new Line2D object
+        return Line2D(xdata, ydata,
+                      linewidth,
+                      linestyle,
+                      color,
+                      marker,
+                      markersize,
+                      markeredgewidth,
+                      markeredgecolor,
+                      markerfacecolor,
+                      markerfacecoloralt,
+                      fillstyle,
+                      antialiased,
+                      dash_capstyle,
+                      solid_capstyle,
+                      dash_joinstyle,
+                      solid_joinstyle,
+                      pickradius,
+                      drawstyle,
+                      markevery,
+                      kwargs)
+
 class Line2D(Artist):
     """
     A line - the line can have both a solid linestyle connecting all
@@ -356,7 +573,7 @@ class Line2D(Artist):
             solid_joinstyle = rcParams['lines.solid_joinstyle']
 
         if is_string_like(linestyle):
-            ds, ls = self._split_drawstyle_linestyle(linestyle)
+            ds, ls = _split_drawstyle_linestyle(linestyle, self.drawStyleKeys)
             if ds is not None and drawstyle is not None and ds != drawstyle:
                 raise ValueError("Inconsistent drawstyle ({0!r}) and "
                                  "linestyle ({1!r})".format(drawstyle,
@@ -1030,38 +1247,6 @@ class Line2D(Artist):
         self._dashOffset, self._dashSeq = _scale_dashes(
             self._us_dashOffset, self._us_dashSeq, self._linewidth)
 
-    def _split_drawstyle_linestyle(self, ls):
-        '''Split drawstyle from linestyle string
-
-        If `ls` is only a drawstyle default to returning a linestyle
-        of '-'.
-
-        Parameters
-        ----------
-        ls : str
-            The linestyle to be processed
-
-        Returns
-        -------
-        ret_ds : str or None
-            If the linestyle string does not contain a drawstyle prefix
-            return None, otherwise return it.
-
-        ls : str
-            The linestyle with the drawstyle (if any) stripped.
-        '''
-        ret_ds = None
-        for ds in self.drawStyleKeys:  # long names are first in the list
-            if ls.startswith(ds):
-                ret_ds = ds
-                if len(ls) > len(ds):
-                    ls = ls[len(ds):]
-                else:
-                    ls = '-'
-                break
-
-        return ret_ds, ls
-
     def set_linestyle(self, ls):
         """
         Set the linestyle of the line (also accepts drawstyles,
@@ -1107,7 +1292,7 @@ class Line2D(Artist):
             The line style.
         """
         if is_string_like(ls):
-            ds, ls = self._split_drawstyle_linestyle(ls)
+            ds, ls = _split_drawstyle_linestyle(ls, self.drawStyleKeys)
             if ds is not None:
                 self.set_drawstyle(ds)
 
